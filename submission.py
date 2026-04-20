@@ -1,11 +1,3 @@
-"""
-Tredence Analytics AI Engineering Assessment
-Self-Pruning Neural Network
-
-Implementation of a neural network that dynamically prunes its weights during training,
-using a custom PrunableLinear layer and a SparsityAllocator to route L1 penalties.
-"""
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
