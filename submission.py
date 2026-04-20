@@ -9,7 +9,6 @@ import numpy as np
 import math
 
 class PrunableLinear(nn.Module):
-    """Linear layer where weights are multiplied by learnable sigmoid gates."""
     def __init__(self, in_features: int, out_features: int, bias: bool = True):
         super().__init__()
         self.in_features = in_features
@@ -21,7 +20,6 @@ class PrunableLinear(nn.Module):
         else:
             self.register_parameter('bias', None)
             
-        # Initialize gates to ~0.95 so network starts with mostly open gates
         self.gate_scores = nn.Parameter(torch.full((out_features, in_features), 3.0))
         self.reset_parameters()
 
@@ -41,7 +39,6 @@ class PrunableLinear(nn.Module):
         return torch.sigmoid(self.gate_scores)
 
 class SparsityAllocator(nn.Module):
-    """Shifts penalization weight between layers during training."""
     def __init__(self, num_layers: int):
         super().__init__()
         self.routing_scores = nn.Parameter(torch.ones(num_layers))
@@ -51,7 +48,6 @@ class SparsityAllocator(nn.Module):
         return allocated_lambdas
 
 class SelfPruningNetwork(nn.Module):
-    """MLP for CIFAR-10 classification using Prunable layers."""
     def __init__(self, num_classes: int = 10):
         super().__init__()
         self.flatten = nn.Flatten()
@@ -73,7 +69,6 @@ class SelfPruningNetwork(nn.Module):
         return [self.fc1, self.fc2, self.fc3]
 
 class DynamicSparsityLoss(nn.Module):
-    """Calculates Cross Entropy Loss + L1 penalty on the gate values."""
     def __init__(self):
         super().__init__()
         self.ce_loss = nn.CrossEntropyLoss()
@@ -101,7 +96,6 @@ def calculate_sparsity_metrics(model, threshold=1e-2):
     return total_elements, pruned_elements, sparsity_ratio
 
 def plot_gates(model, title, filepath):
-    """Generates a histogram plot showing gate value distributions."""
     all_gates = []
     with torch.no_grad():
         for layer in model.get_prunable_layers():
