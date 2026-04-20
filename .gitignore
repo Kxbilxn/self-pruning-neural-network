@@ -1,0 +1,17 @@
+# Dataset folder (downloaded automatically, no need to upload 160MB of images)
+data/
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore local explanation file meant only for you
+project_explanation.txt
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# If you have an experiments folder leftover from testing
+experiments/
